@@ -1,37 +1,75 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 
-const Example = () => {
+const Practice = () => {
   const [count, setCount] = useState(0)
-  const [data, setData] = useState(1)
+  const userName = useRef(null)
+  const passWord = useRef(null)
 
-  const handleClick = event => {
-    event.preventDefault();
-    // const {name}  = event.target
-    // console.log(`Name: ${name}`)
-    setCount(prev => prev + data) // Add 'data' value to count
-    setData(1) // Reset data to 1
+  const clearForm = () => {
+    userName.current.value = ''
+    passWord.current.value = ''
   }
 
-  const handlerChange = event => {
-    console.log(event) // Log the event immediately
-    const { name, value } = event.target // Destructure 'name' and 'value'
-    console.log(`Name: ${name}, Value: ${value}`)
-    setData(Number(value)) // Update state with the input value
+  const handleSubmit = event => {
+    event.preventDefault()
+    console.log(userName.current.value, passWord.current.value)
+    console.log('Form submitted')
+    clearForm()
+  }
+
+  const handleFocus = () => {
+    userName.current.focus() 
+  }
+  const handleFocusPassword = () => {
+    passWord.current.focus()
   }
 
   return (
     <div>
-      <button name='count' onClick={handleClick}>Count: {count}</button>
-      <div>
+      <h1 className='text-6xl font-bold underline text-red-500 text-center'>
+        {count}
+      </h1>
+      <form onSubmit={handleSubmit}>
         <input
-          onChange={handlerChange}
-          type='number'
-          name='data' // The 'name' attribute
-          placeholder='Enter a number'
+          type='text'
+          ref={userName}
+          required
+          placeholder='Username'
+          className='block w-full p-2 border border-gray-300 rounded-lg mb-4'
         />
-      </div>
+        <input
+          type='password'
+          ref={passWord}
+          required
+          placeholder='Password'
+          className='block w-full p-2 border border-gray-300 rounded-lg mb-4'
+        />
+        {/* Separate button for focusing */}
+        <button
+          type='button'
+          onClick={handleFocus}
+          className='block w-full p-2 bg-green-500 text-white rounded-lg mb-4'
+        >
+          Focus on Username
+        </button>
+
+        <button
+          type='button'
+          onClick={handleFocusPassword}
+          className='block w-full p-2 bg-green-500 text-white rounded-lg mb-4'
+        >
+          Focus on Password
+        </button>
+        {/* Submit button */}
+        <button
+          type='submit'
+          className='block w-full p-2 bg-blue-500 text-white rounded-lg'
+        >
+          Submit
+        </button>
+      </form>
     </div>
   )
 }
 
-export default Example
+export default Practice
